@@ -5,6 +5,7 @@ $(function () {
     var noOfPages;
     var columnSorting = 'id';
     var orderSorting = 'desc';
+    var savingMethod;
 
     // Pagination
 
@@ -128,6 +129,7 @@ $(function () {
     container.on('click', '.glyphicon-cog', function () {
 
         var id = $(this).data('id');
+        savingMethod = "edit";
 
         $('#myModal').modal('toggle');
         $('#myModal').data('id', id);
@@ -139,26 +141,12 @@ $(function () {
         });
     });
 
-    $('#saveModal').on('click', function (e) {
-        var editTitle = $('#inputTitle').val();
-        var editContent = $('#inputContent').val();
-        var editedElement = {title: editTitle, content: editContent};
-        let id = $('#myModal').data('id');
-
-        $.ajax({
-            method: "PUT",
-            url: "http://localhost:3000/posts/" + id,
-            data: editedElement
-        }).done(function (msg) {
-            $('#myModal').modal('hide');
-
-            $('#' + id).find('.panelTitle').text(editTitle);
-        });
-    });
-
     /// New element
 
         $('.header').on('click', '#openModalNew', function () {
+
+            savingMethod = 'new';
+
             $('#myModal').modal('toggle');
             $('#myModalLabel').text('Create new');
 
@@ -166,19 +154,44 @@ $(function () {
             $('#inputContent').val('');
         });
 
+
+
+
         $('#saveModal').on('click', function () {
 
-            var newTitle = $('#inputTitle').val();
-            var newContent = $('#inputContent').val();
+            if(savingMethod == 'new'){
 
-            var newElement = {title: newTitle, content: newContent};
+                var newTitle = $('#inputTitle').val();
+                var newContent = $('#inputContent').val();
 
-            $.post("http://localhost:3000/posts", newElement)
-                .done(function (data) {
+                var newElement = {title: newTitle, content: newContent};
+
+                $.post("http://localhost:3000/posts", newElement)
+                    .done(function (data) {
+                        $('#myModal').modal('hide');
+
+                        renderElement(newElement);
+                    });
+
+            } else if (savingMethod == 'edit'){
+
+                var editTitle = $('#inputTitle').val();
+                var editContent = $('#inputContent').val();
+                var editedElement = {title: editTitle, content: editContent};
+                let id = $('#myModal').data('id');
+
+                $.ajax({
+                    method: "PUT",
+                    url: "http://localhost:3000/posts/" + id,
+                    data: editedElement
+                }).done(function (msg) {
                     $('#myModal').modal('hide');
 
-                    renderElement(newElement);
+                    $('#' + id).find('.panelTitle').text(editTitle);
                 });
+            }
+
+
         });
 
 
