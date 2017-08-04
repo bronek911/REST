@@ -1,0 +1,31 @@
+span.navbar-right{
+    margin-right: 5px;
+}
+
+span.glyphicon{
+    margin-right: 15px;
+}
+
+div.header{
+    width: 80vw;
+    margin: auto;
+    padding-bottom: 100px;
+}
+
+span.title{
+    font-size: 3rem;
+}
+
+div.pagination{
+    margin-left: 40vw;
+}
+
+div.sort{
+    padding-bottom: 50px;
+}
+div.sortInputs{
+    display: inline-flex;
+}
+.sorting{
+    width: 150px;
+}
